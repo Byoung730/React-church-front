@@ -25,7 +25,7 @@ const App = ({ classes }) => (
     <AppHeader />
     <main className={classes.main}>
       <Route exact path="/" component={Home} />
-      <People />
+      <Route exact path="/people" component={People} />
     </main>
   </Fragment>
 );
