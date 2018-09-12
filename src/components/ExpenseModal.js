@@ -75,13 +75,66 @@ class ExpenseModal extends Component {
   }
 
   handleSubmit(event) {
+    // const formItem = {
+    //   item: this.state.item,
+    //   description: this.state.description,
+    //   amount: this.state.amount,
+    //   date: this.state.date,
+    //   id: this.state.id
+    // };
+    // const allIds = this.state.expenses.map(expense => expense.id);
+    // console.log("allIds: ", allIds);
+    // console.log("formItem: ", formItem);
+    // if (
+    //   this.state.item === "" ||
+    //   this.state.description === "" ||
+    //   this.state.amount === "" ||
+    //   this.state.date === ""
+    // ) {
+    //   alert("Please input all fields");
+    // } else {
+    //   console.log("is it in there? ", _.contains(allIds, this.state.id));
+    //   if (_.contains(allIds, this.state.id)) {
+    //     // update item
+    //     const request = new Request("http://localhost:3001/api/expenses/:id", {
+    //       method: "PUT",
+    //       headers: new Headers({ "Content-Type": "application/json" }),
+    //       body: JSON.stringify(formItem)
+    //     });
+    //     let that = this;
+    //     let formdata = that.state.formdata;
+    //     formdata.push(formItem);
+    //     console.log("is it in there? ", _.contains(allIds, this.state.id));
+    //     that.setState({
+    //       formdata: formdata
+    //     });
+    //
+    //     fetch(request)
+    //       .then(response => {
+    //         response.json().then(data => {});
+    //       })
+    //       .catch(function(err) {
+    //         console.log(err);
+    //       });
+
+    // this.setState(prevState => ({
+    //   formdata: prevState.formdata.map(expense => {
+    //     if (expense.item === formItem.item) return formItem;
+    //     else return expense;
+    //   })
+    // }));
+
     const formItem = {
       item: this.state.item,
       description: this.state.description,
       amount: this.state.amount,
-      date: this.state.date
+      date: this.state.date,
+      id: this.state.id
     };
+    const allIds = this.state.expenses.map(expense => expense.id);
+    console.log("allIds: ", allIds);
     console.log("formItem: ", formItem);
+    console.log("is it in there? ", allIds.includes(this.state.id));
     if (
       this.state.item === "" ||
       this.state.description === "" ||
@@ -90,17 +143,35 @@ class ExpenseModal extends Component {
     ) {
       alert("Please input all fields");
     } else {
-      if (
-        this.state.formdata.filter(expense => expense.item === formItem.item)
-          .length > 0
-      ) {
+      if (allIds.includes(this.state.id)) {
         // update item
-        this.setState(prevState => ({
-          formdata: prevState.formdata.map(expense => {
-            if (expense.item === formItem.item) return formItem;
-            else return expense;
+
+        const request = new Request("http://localhost:3001/api/expenses/:id", {
+          method: "PUT",
+          headers: new Headers({ "Content-Type": "application/json" }),
+          body: JSON.stringify(formItem)
+        });
+        let that = this;
+        let formdata = that.state.formdata;
+        formdata.push(formItem);
+        that.setState({
+          formdata: formdata
+        });
+
+        fetch(request)
+          .then(response => {
+            response.json().then(data => {});
           })
-        }));
+          .catch(function(err) {
+            console.log(err);
+          });
+
+        // this.setState(prevState => ({
+        //   formdata: prevState.formdata.map(expense => {
+        //     if (expense.item === formItem.item) return formItem;
+        //     else return expense;
+        //   })
+        // }));
       } else {
         // add new item
 
