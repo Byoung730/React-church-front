@@ -277,7 +277,8 @@ class ExpenseModal extends Component {
         <style>
           {`
             td {
-              border: 3px solid black;
+              border: 1px solid black;
+              text-align: center
             };
               modal {
                 margin-left: 20px;
@@ -293,7 +294,9 @@ class ExpenseModal extends Component {
             Total Expenses: ${cleanTotal}
           </Typography>
           <ButtonToolbar>
-            <Button onClick={this.showModal}>Add Expenses</Button>
+            <Button variant="raised" color="primary" onClick={this.showModal}>
+              Add Expenses
+            </Button>
             <Table>
               <thead>
                 <tr>
@@ -314,10 +317,18 @@ class ExpenseModal extends Component {
                     <td>{expense.date}</td>
                     <td>{expense.id}</td>
                     <td>
-                      <Button onClick={e => this.showEditModal(e, i)}>
+                      <Button
+                        variant="raised"
+                        color="primary"
+                        onClick={e => this.showEditModal(e, i)}
+                      >
                         Update
                       </Button>
-                      <Button onClick={() => this.removeExpense(expense.id)}>
+                      <Button
+                        variant="raised"
+                        color="secondary"
+                        onClick={() => this.removeExpense(expense.id)}
+                      >
                         Delete
                       </Button>
                     </td>
