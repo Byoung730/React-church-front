@@ -9,6 +9,7 @@ import Home from "./pages/Home";
 // import PeopleManager from "./pages/PeopleManager";
 import AppHeader from "./components/AppHeader";
 import ExpenseModal from "./components/ExpenseModal";
+import IncomeModal from "./components/IncomeModal";
 
 // axios.defaults.baseURL = "http://localhost:3001/api";
 
@@ -28,6 +29,7 @@ const App = ({ classes }) => (
     <main className={classes.main}>
       <Route exact path="/" component={Home} />
       <Route exact path="/expense" component={ExpenseModal} />
+      <Route exact path="/income" component={IncomeModal} />
     </main>
   </Fragment>
 );
