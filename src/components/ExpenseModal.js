@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import { Form, FormControl, Col, Modal, ButtonToolbar } from "react-bootstrap";
 import { Button, Typography, Table, FormGroup } from "@material-ui/core";
-import _ from "lodash";
 
 class ExpenseModal extends Component {
   constructor(props) {
@@ -80,11 +79,8 @@ class ExpenseModal extends Component {
       item: this.state.item,
       description: this.state.description,
       amount: this.state.amount,
-      date: this.state.date,
-      id: this.state.id
+      date: this.state.date
     };
-    const allIds = this.state.expenses.map(expense => expense.id);
-    console.log("allIds: ", allIds);
     console.log("formItem: ", formItem);
     if (
       this.state.item === "" ||
@@ -94,36 +90,17 @@ class ExpenseModal extends Component {
     ) {
       alert("Please input all fields");
     } else {
-      console.log("is it in there? ", _.contains(allIds, this.state.id));
-      if (_.contains(allIds, this.state.id)) {
+      if (
+        this.state.formdata.filter(expense => expense.item === formItem.item)
+          .length > 0
+      ) {
         // update item
-        const request = new Request("http://localhost:3001/api/expenses/:id", {
-          method: "PUT",
-          headers: new Headers({ "Content-Type": "application/json" }),
-          body: JSON.stringify(formItem)
-        });
-        let that = this;
-        let formdata = that.state.formdata;
-        formdata.push(formItem);
-        console.log("is it in there? ", _.contains(allIds, this.state.id));
-        that.setState({
-          formdata: formdata
-        });
-
-        fetch(request)
-          .then(response => {
-            response.json().then(data => {});
+        this.setState(prevState => ({
+          formdata: prevState.formdata.map(expense => {
+            if (expense.item === formItem.item) return formItem;
+            else return expense;
           })
-          .catch(function(err) {
-            console.log(err);
-          });
-
-        // this.setState(prevState => ({
-        //   formdata: prevState.formdata.map(expense => {
-        //     if (expense.item === formItem.item) return formItem;
-        //     else return expense;
-        //   })
-        // }));
+        }));
       } else {
         // add new item
 
@@ -135,10 +112,10 @@ class ExpenseModal extends Component {
         body: JSON.stringify(formItem)
       });
       let that = this;
-      let formdata = that.state.formdata;
-      formdata.push(formItem);
+      let expenses = that.state.expenses;
+      expenses.push(formItem);
       that.setState({
-        formdata: formdata
+        formdata: expenses
       });
 
       fetch(request)
@@ -156,18 +133,6 @@ class ExpenseModal extends Component {
 
     alert("Expense submitted!");
 
-    // let that = this;
-    // fetch("http://localhost:3001/expenses").then(response => {
-    //   response.json().then(expensesData => {
-    //     let expenses = that.state.expenses;
-    //     expenses.concat(expensesData);
-    //     console.log("expenses: ", expenses);
-    //     that.setState({
-    //       expenses: expensesData
-    //     });
-    //   });
-    // });
-
     this.setState({
       item: "",
       description: "",
@@ -177,6 +142,18 @@ class ExpenseModal extends Component {
 
     event.preventDefault();
   }
+
+  // let that = this;
+  // fetch("http://localhost:3001/expenses").then(response => {
+  //   response.json().then(expensesData => {
+  //     let expenses = that.state.expenses;
+  //     expenses.concat(expensesData);
+  //     console.log("expenses: ", expenses);
+  //     that.setState({
+  //       expenses: expensesData
+  //     });
+  //   });
+  // });
 
   removeExpense = id => {
     alert("Are you sure you want to Delete this expense?");
@@ -293,10 +270,9 @@ class ExpenseModal extends Component {
                   Add Expenses
                 </Modal.Title>
               </Modal.Header>
-              <div class="col-md-4" />
               <Modal.Body class="col-md-6 col-md-offset-3">
                 <Form horizontal onSubmit={this.handleSubmit}>
-                  <FormGroup controlId="formHorizontalEmail">
+                  <FormGroup>
                     <Col smOffset={4} sm={4}>
                       <FormControl
                         type="Text"
@@ -307,7 +283,7 @@ class ExpenseModal extends Component {
                       />
                     </Col>
                   </FormGroup>
-                  <FormGroup controlId="formHorizontalPassword">
+                  <FormGroup>
                     <Col smOffset={4} sm={4}>
                       <FormControl
                         type="description"
@@ -318,7 +294,7 @@ class ExpenseModal extends Component {
                       />
                     </Col>
                   </FormGroup>
-                  <FormGroup controlId="formHorizontalPassword">
+                  <FormGroup>
                     <Col smOffset={4} sm={4}>
                       <FormControl
                         type="amount"
@@ -329,7 +305,7 @@ class ExpenseModal extends Component {
                       />
                     </Col>
                   </FormGroup>
-                  <FormGroup controlId="formHorizontalPassword">
+                  <FormGroup>
                     <Col smOffset={4} sm={4}>
                       <FormControl
                         type="date"
