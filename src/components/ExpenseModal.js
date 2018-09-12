@@ -27,10 +27,11 @@ class ExpenseModal extends Component {
     let that = this;
     fetch("http://localhost:3001/expenses").then(response => {
       response.json().then(expensesData => {
-        let formdata = that.state.formdata;
-        formdata.concat(expensesData);
+        let expenses = that.state.expenses;
+        expenses.concat(expensesData);
+        console.log("expenses: ", expenses);
         that.setState({
-          formdata: expensesData
+          expenses: expensesData
         });
       });
     });
@@ -110,10 +111,10 @@ class ExpenseModal extends Component {
         body: JSON.stringify(formItem)
       });
       let that = this;
-      let expenses = that.state.expenses;
-      expenses.push(formItem);
+      let formdata = that.state.formdata;
+      formdata.push(formItem);
       that.setState({
-        formdata: expenses
+        formdata: formdata
       });
 
       fetch(request)
@@ -153,8 +154,8 @@ class ExpenseModal extends Component {
   render() {
     const reducer = (accumulator, currentValue) => accumulator + currentValue; // TODO: sum total
     var expenseAmountArray = [0];
-    if (this.state.formdata.length > 0) {
-      var expenseAmountArray = this.state.formdata.map(item => {
+    if (this.state.expenses.length > 0) {
+      var expenseAmountArray = this.state.expenses.map(item => {
         return Number(item.amount);
       });
     }
@@ -186,7 +187,7 @@ class ExpenseModal extends Component {
                 </tr>
               </thead>
               <tbody>
-                {this.state.formdata.map((expense, i) => (
+                {this.state.expenses.map((expense, i) => (
                   <tr key={i}>
                     <td>{expense.item}</td>
                     <td>{expense.description}</td>
