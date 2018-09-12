@@ -113,15 +113,24 @@ class ExpenseModal extends Component {
   }
 
   render() {
+    const reducer = (accumulator, currentValue) => accumulator + currentValue; // TODO: sum total
+    var expenseAmountArray = [0];
+    if (this.state.formdata.length > 0) {
+      var expenseAmountArray = this.state.formdata.map(item => {
+        return Number(item.amount);
+      });
+    }
+    let total = expenseAmountArray.reduce(reducer);
+    console.log(total);
     return (
       <div>
         <Typography variant="display1">Expense Manager</Typography>
-
+        <Typography variant="display1">Total Expenses: ${total}</Typography>
         <ButtonToolbar>
           <Button bsStyle="primary" onClick={this.showModal}>
             Add Expenses
           </Button>
-          <Table striped bordered condensed hover>
+          <Table striped bordered hover>
             <thead>
               <tr>
                 <th>Expense</th>
