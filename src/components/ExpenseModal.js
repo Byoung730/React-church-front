@@ -97,7 +97,7 @@ class ExpenseModal extends Component {
       console.log("is it in there? ", _.contains(allIds, this.state.id));
       if (_.contains(allIds, this.state.id)) {
         // update item
-        const request = new Request("http://localhost:3001/api/expense/:id", {
+        const request = new Request("http://localhost:3001/api/expenses/:id", {
           method: "PUT",
           headers: new Headers({ "Content-Type": "application/json" }),
           body: JSON.stringify(formItem)
@@ -105,6 +105,7 @@ class ExpenseModal extends Component {
         let that = this;
         let formdata = that.state.formdata;
         formdata.push(formItem);
+        console.log("is it in there? ", _.contains(allIds, this.state.id));
         that.setState({
           formdata: formdata
         });
@@ -117,12 +118,12 @@ class ExpenseModal extends Component {
             console.log(err);
           });
 
-        this.setState(prevState => ({
-          formdata: prevState.formdata.map(expense => {
-            if (expense.item === formItem.item) return formItem;
-            else return expense;
-          })
-        }));
+        // this.setState(prevState => ({
+        //   formdata: prevState.formdata.map(expense => {
+        //     if (expense.item === formItem.item) return formItem;
+        //     else return expense;
+        //   })
+        // }));
       } else {
         // add new item
 
@@ -229,6 +230,13 @@ class ExpenseModal extends Component {
           {`
             td {
               border: 3px solid black;
+            };
+              modal {
+                margin-left: 20px;
+                padding: 20px;
+                font-size: large;
+
+              }
             }`}
         </style>
         <div>
@@ -275,6 +283,7 @@ class ExpenseModal extends Component {
               show={this.state.show}
               onHide={this.hideModal}
               dialogClassName="custom-modal"
+              class="col-md-6 col-md-offset-3"
             >
               <Modal.Header closeButton>
                 <Modal.Title
@@ -284,7 +293,8 @@ class ExpenseModal extends Component {
                   Add Expenses
                 </Modal.Title>
               </Modal.Header>
-              <Modal.Body>
+              <div class="col-md-4" />
+              <Modal.Body class="col-md-6 col-md-offset-3">
                 <Form horizontal onSubmit={this.handleSubmit}>
                   <FormGroup controlId="formHorizontalEmail">
                     <Col smOffset={4} sm={4}>
