@@ -56,7 +56,6 @@ class ExpenseModal extends Component {
     this.setState({
       [event.target.name]: event.target.value
     });
-    console.log("value: ", event.target.value);
   }
 
   handleSubmit(event) {
