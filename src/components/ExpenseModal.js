@@ -7,7 +7,7 @@ class ExpenseModal extends Component {
     super(props);
 
     this.state = {
-      name: "",
+      item: "",
       description: "",
       amount: "",
       date: "",
@@ -34,7 +34,7 @@ class ExpenseModal extends Component {
     this.setState({
       show: true,
 
-      name: recordToEdit.name,
+      item: recordToEdit.item,
       description: recordToEdit.description,
       amount: recordToEdit.amount,
       date: recordToEdit.date
@@ -44,7 +44,7 @@ class ExpenseModal extends Component {
   hideModal() {
     this.setState({
       show: false,
-      name: "",
+      item: "",
       description: "",
       amount: "",
       date: ""
@@ -56,32 +56,35 @@ class ExpenseModal extends Component {
     this.setState({
       [event.target.name]: event.target.value
     });
+    console.log("value: ", event.target.value);
   }
 
   handleSubmit(event) {
     const formItem = {
-      name: this.state.name,
+      item: this.state.item,
       description: this.state.description,
       amount: this.state.amount,
-      date: this.state.date
+      date: this.state.date,
+      id: Math.random().toFixed(8)
     };
-
+    console.log("formItem: ", formItem);
     if (
-      this.state.name === "" ||
+      this.state.item === "" ||
+      this.state.description === "" ||
       this.state.amount === "" ||
       this.state.date === ""
     ) {
-      alert("Please fill mandatory field");
+      alert("Please input all fields");
     } else {
       if (
-        this.state.formdata.filter(item => item.name === formItem.name).length >
-        0
+        this.state.formdata.filter(expense => expense.item === formItem.item)
+          .length > 0
       ) {
         // update item
         this.setState(prevState => ({
-          formdata: prevState.formdata.map(item => {
-            if (item.name === formItem.name) return formItem;
-            else return item;
+          formdata: prevState.formdata.map(expense => {
+            if (expense.item === formItem.item) return formItem;
+            else return expense;
           })
         }));
       } else {
@@ -91,10 +94,10 @@ class ExpenseModal extends Component {
         }));
       }
 
-      alert("form submitted: ");
+      alert("Expense submitted!");
 
       this.setState({
-        name: "",
+        item: "",
         description: "",
         amount: "",
         date: ""
@@ -104,7 +107,7 @@ class ExpenseModal extends Component {
   }
 
   deleteExpense(i) {
-    alert("are you sure you want to Delete this item ?");
+    alert("Are you sure you want to Delete this expense?");
     this.setState({
       formdata: this.state.formdata.filter((item, index) => {
         return index !== i;
@@ -121,7 +124,6 @@ class ExpenseModal extends Component {
       });
     }
     let total = expenseAmountArray.reduce(reducer);
-    console.log(total);
     return (
       <div>
         <Typography variant="display1">Expense Manager</Typography>
@@ -141,12 +143,12 @@ class ExpenseModal extends Component {
               </tr>
             </thead>
             <tbody>
-              {this.state.formdata.map((item, i) => (
+              {this.state.formdata.map((expense, i) => (
                 <tr key={i}>
-                  <td>{item.name}</td>
-                  <td>{item.description}</td>
-                  <td>{item.amount}</td>
-                  <td>{item.date}</td>
+                  <td>{expense.item}</td>
+                  <td>{expense.description}</td>
+                  <td>{expense.amount}</td>
+                  <td>{expense.date}</td>
                   <td>
                     <Button
                       bsStyle="warning"
@@ -186,9 +188,9 @@ class ExpenseModal extends Component {
                   <Col smOffset={4} sm={4}>
                     <FormControl
                       type="Text"
-                      placeholder="name"
-                      name="name"
-                      value={this.state.name}
+                      placeholder="item"
+                      name="item"
+                      value={this.state.item}
                       onChange={this.handleInputChange}
                     />
                   </Col>
