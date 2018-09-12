@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { Form, FormControl, Col, Modal, ButtonToolbar } from "react-bootstrap";
 import { Button, Typography, Table, FormGroup } from "@material-ui/core";
+import _ from "lodash";
 
 class ExpenseModal extends Component {
   constructor(props) {
@@ -79,8 +80,11 @@ class ExpenseModal extends Component {
       item: this.state.item,
       description: this.state.description,
       amount: this.state.amount,
-      date: this.state.date
+      date: this.state.date,
+      id: this.state.id
     };
+    const allIds = this.state.expenses.map(expense => expense.id);
+    console.log("allIds: ", allIds);
     console.log("formItem: ", formItem);
     if (
       this.state.item === "" ||
@@ -90,10 +94,8 @@ class ExpenseModal extends Component {
     ) {
       alert("Please input all fields");
     } else {
-      if (
-        this.state.formdata.filter(expense => expense.id === formItem.id)
-          .length > 0
-      ) {
+      console.log("is it in there? ", _.contains(allIds, this.state.id));
+      if (_.contains(allIds, this.state.id)) {
         // update item
         const request = new Request("http://localhost:3001/api/expense/:id", {
           method: "PUT",
@@ -175,14 +177,41 @@ class ExpenseModal extends Component {
     event.preventDefault();
   }
 
-  deleteExpense(i) {
+  removeExpense = id => {
     alert("Are you sure you want to Delete this expense?");
-    this.setState({
-      formdata: this.state.formdata.filter((item, index) => {
-        return index !== i;
-      })
+    let that = this;
+    let expenses = this.state.expenses;
+    let expense = expenses.find(expense => {
+      return expense.id === id;
     });
-  }
+
+    const request = new Request(
+      "http://localhost:3001/api/remove-expense/" + id,
+      {
+        method: "DELETE"
+      }
+    );
+
+    console.log(id);
+    fetch(request).then(response => {
+      expenses.splice(expenses.indexOf(expense), 1);
+      that.setState({
+        expenses: expenses
+      });
+      response.json().then(data => {
+        console.log(data);
+      });
+    });
+  };
+
+  // deleteExpense(i) {
+  //   alert("Are you sure you want to Delete this expense?");
+  //   this.setState({
+  //     formdata: this.state.formdata.filter((item, index) => {
+  //       return index !== i;
+  //     })
+  //   });
+  // }
 
   render() {
     const reducer = (accumulator, currentValue) => accumulator + currentValue; // TODO: sum total
@@ -232,7 +261,7 @@ class ExpenseModal extends Component {
                       <Button onClick={e => this.showEditModal(e, i)}>
                         Update
                       </Button>
-                      <Button onClick={() => this.deleteExpense(i)}>
+                      <Button onClick={() => this.removeExpense(expense.id)}>
                         Delete
                       </Button>
                     </td>
