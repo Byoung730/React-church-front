@@ -29,6 +29,7 @@ class PeopleEditModal extends Component {
       gender: "",
       date_joined: "",
       birthdate: "",
+      marital_status: "",
       allow_texts: ""
     };
     // this.handleSave = this.handleSave.bind(this);

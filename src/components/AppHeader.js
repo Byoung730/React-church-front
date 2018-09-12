@@ -24,8 +24,8 @@ const AppHeader = ({ classes }) => (
       <Button color="inherit" component={Link} to="/">
         Home
       </Button>
-      <Button color="inherit" component={Link} to="/people">
-        People Manager
+      <Button color="inherit" component={Link} to="/expense">
+        Expense Manager
       </Button>
       <div className={classes.flex} />
       <Button color="inherit" disabled>

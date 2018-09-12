@@ -6,8 +6,9 @@ import { CssBaseline, withStyles } from "@material-ui/core";
 import "./App.css";
 // import People from "./components/People";
 import Home from "./pages/Home";
-import PeopleManager from "./pages/PeopleManager";
+// import PeopleManager from "./pages/PeopleManager";
 import AppHeader from "./components/AppHeader";
+import ExpenseModal from "./components/ExpenseModal";
 
 // axios.defaults.baseURL = "http://localhost:3001/api";
 
@@ -26,7 +27,7 @@ const App = ({ classes }) => (
     <AppHeader />
     <main className={classes.main}>
       <Route exact path="/" component={Home} />
-      <Route exact path="/people" component={PeopleManager} />
+      <Route exact path="/expense" component={ExpenseModal} />
     </main>
   </Fragment>
 );
