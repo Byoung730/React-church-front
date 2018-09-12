@@ -63,8 +63,7 @@ class ExpenseModal extends Component {
       item: this.state.item,
       description: this.state.description,
       amount: this.state.amount,
-      date: this.state.date,
-      id: Math.random().toFixed(8)
+      date: this.state.date
     };
     console.log("formItem: ", formItem);
     if (
