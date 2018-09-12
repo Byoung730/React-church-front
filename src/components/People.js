@@ -26,12 +26,12 @@ class People extends Component {
   componentDidMount() {
     console.log("COMPONENT HAS MOUNTED");
     let that = this;
-    fetch("http://localhost:3001/people").then(function(response) {
-      response.json().then(function(data) {
-        let people = that.state.people;
-        people.concat(data);
+    fetch("http://localhost:3001/expenses").then(function(response) {
+      response.json().then(function(expensesData) {
+        let expenses = that.state.expenses;
+        people.concat(expensesData);
         that.setState({
-          people: data
+          expenses: expensesData
         });
       });
     });

@@ -12,7 +12,8 @@ class ExpenseModal extends Component {
       amount: "",
       date: "",
       show: false,
-      formdata: []
+      formdata: [],
+      expenses: []
     };
 
     this.handleSubmit = this.handleSubmit.bind(this);
@@ -20,6 +21,19 @@ class ExpenseModal extends Component {
     this.showModal = this.showModal.bind(this);
     this.hideModal = this.hideModal.bind(this);
     this.showEditModal = this.showEditModal.bind(this);
+  }
+
+  componentDidMount() {
+    let that = this;
+    fetch("http://localhost:3001/expenses").then(response => {
+      response.json().then(expensesData => {
+        let formdata = that.state.formdata;
+        formdata.concat(expensesData);
+        that.setState({
+          formdata: expensesData
+        });
+      });
+    });
   }
 
   showModal() {
@@ -122,122 +136,123 @@ class ExpenseModal extends Component {
       });
     }
     let total = expenseAmountArray.reduce(reducer);
+    let cleanTotal = total.toFixed(2);
     return (
       <div>
-        <Typography variant="display1">Expense Manager</Typography>
-        <Typography variant="display1">Total Expenses: ${total}</Typography>
-        <ButtonToolbar>
-          <Button bsStyle="primary" onClick={this.showModal}>
-            Add Expenses
-          </Button>
-          <Table striped bordered hover>
-            <thead>
-              <tr>
-                <th>Expense</th>
-                <th>Description</th>
-                <th>Amount</th>
-                <th>Date</th>
-                <th>Action</th>
-              </tr>
-            </thead>
-            <tbody>
-              {this.state.formdata.map((expense, i) => (
-                <tr key={i}>
-                  <td>{expense.item}</td>
-                  <td>{expense.description}</td>
-                  <td>{expense.amount}</td>
-                  <td>{expense.date}</td>
-                  <td>
-                    <Button
-                      bsStyle="warning"
-                      onClick={e => this.showEditModal(e, i)}
-                    >
-                      Update
-                    </Button>
-                    <Button
-                      bsStyle="danger"
-                      onClick={() => this.deleteExpense(i)}
-                    >
-                      Delete
-                    </Button>
-                  </td>
-                  <td />
+        <style>
+          {`
+            td {
+              border: 3px solid black;
+            }`}
+        </style>
+        <div>
+          <Typography variant="display1">Expense Manager</Typography>
+          <Typography variant="display1">
+            Total Expenses: ${cleanTotal}
+          </Typography>
+          <ButtonToolbar>
+            <Button onClick={this.showModal}>Add Expenses</Button>
+            <Table>
+              <thead>
+                <tr>
+                  <th>Expense</th>
+                  <th>Description</th>
+                  <th>Amount</th>
+                  <th>Date</th>
+                  <th>Action</th>
                 </tr>
-              ))}
-            </tbody>
-          </Table>
-          <Modal
-            {...this.props}
-            show={this.state.show}
-            onHide={this.hideModal}
-            dialogClassName="custom-modal"
-          >
-            <Modal.Header closeButton>
-              <Modal.Title
-                id="contained-modal-title-lg "
-                className="text-center"
-              >
-                Add Expenses
-              </Modal.Title>
-            </Modal.Header>
-            <Modal.Body>
-              <Form horizontal onSubmit={this.handleSubmit}>
-                <FormGroup controlId="formHorizontalEmail">
-                  <Col smOffset={4} sm={4}>
-                    <FormControl
-                      type="Text"
-                      placeholder="item"
-                      name="item"
-                      value={this.state.item}
-                      onChange={this.handleInputChange}
-                    />
-                  </Col>
-                </FormGroup>
-                <FormGroup controlId="formHorizontalPassword">
-                  <Col smOffset={4} sm={4}>
-                    <FormControl
-                      type="description"
-                      placeholder="description"
-                      name="description"
-                      value={this.state.description}
-                      onChange={this.handleInputChange}
-                    />
-                  </Col>
-                </FormGroup>
-                <FormGroup controlId="formHorizontalPassword">
-                  <Col smOffset={4} sm={4}>
-                    <FormControl
-                      type="amount"
-                      placeholder="amount"
-                      name="amount"
-                      value={this.state.amount}
-                      onChange={this.handleInputChange}
-                    />
-                  </Col>
-                </FormGroup>
-                <FormGroup controlId="formHorizontalPassword">
-                  <Col smOffset={4} sm={4}>
-                    <FormControl
-                      type="date"
-                      placeholder="date"
-                      name="date"
-                      value={this.state.date}
-                      onChange={this.handleInputChange}
-                    />
-                  </Col>
-                </FormGroup>
+              </thead>
+              <tbody>
+                {this.state.formdata.map((expense, i) => (
+                  <tr key={i}>
+                    <td>{expense.item}</td>
+                    <td>{expense.description}</td>
+                    <td>{expense.amount}</td>
+                    <td>{expense.date}</td>
+                    <td>
+                      <Button onClick={e => this.showEditModal(e, i)}>
+                        Update
+                      </Button>
+                      <Button onClick={() => this.deleteExpense(i)}>
+                        Delete
+                      </Button>
+                    </td>
+                    <td />
+                  </tr>
+                ))}
+              </tbody>
+            </Table>
+            <Modal
+              {...this.props}
+              show={this.state.show}
+              onHide={this.hideModal}
+              dialogClassName="custom-modal"
+            >
+              <Modal.Header closeButton>
+                <Modal.Title
+                  id="contained-modal-title-lg "
+                  className="text-center"
+                >
+                  Add Expenses
+                </Modal.Title>
+              </Modal.Header>
+              <Modal.Body>
+                <Form horizontal onSubmit={this.handleSubmit}>
+                  <FormGroup controlId="formHorizontalEmail">
+                    <Col smOffset={4} sm={4}>
+                      <FormControl
+                        type="Text"
+                        placeholder="item"
+                        name="item"
+                        value={this.state.item}
+                        onChange={this.handleInputChange}
+                      />
+                    </Col>
+                  </FormGroup>
+                  <FormGroup controlId="formHorizontalPassword">
+                    <Col smOffset={4} sm={4}>
+                      <FormControl
+                        type="description"
+                        placeholder="description"
+                        name="description"
+                        value={this.state.description}
+                        onChange={this.handleInputChange}
+                      />
+                    </Col>
+                  </FormGroup>
+                  <FormGroup controlId="formHorizontalPassword">
+                    <Col smOffset={4} sm={4}>
+                      <FormControl
+                        type="amount"
+                        placeholder="amount"
+                        name="amount"
+                        value={this.state.amount}
+                        onChange={this.handleInputChange}
+                      />
+                    </Col>
+                  </FormGroup>
+                  <FormGroup controlId="formHorizontalPassword">
+                    <Col smOffset={4} sm={4}>
+                      <FormControl
+                        type="date"
+                        placeholder="date"
+                        name="date"
+                        value={this.state.date}
+                        onChange={this.handleInputChange}
+                      />
+                    </Col>
+                  </FormGroup>
 
-                <FormGroup>
-                  <Col smOffset={5} sm={4}>
-                    <Button type="submit" bsStyle="primary">
-                      Add
-                    </Button>
-                  </Col>
-                </FormGroup>
-              </Form>
-            </Modal.Body>
-          </Modal>
-        </ButtonToolbar>
+                  <FormGroup>
+                    <Col smOffset={5} sm={4}>
+                      <Button type="submit">Add</Button>
+                    </Col>
+                  </FormGroup>
+                </Form>
+              </Modal.Body>
+            </Modal>
+          </ButtonToolbar>
+        </div>
       </div>
     );
   }
