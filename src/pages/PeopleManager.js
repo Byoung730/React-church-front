@@ -64,7 +64,7 @@ class PeopleManager extends Component {
   async getPeople() {
     this.setState({
       loading: false,
-      people: await this.fetch("get", "/api/people")
+      people: await this.fetch("get", "/people")
     });
   }
 
