@@ -101,20 +101,43 @@ class ExpenseModal extends Component {
         }));
       } else {
         // add new item
-        this.setState(prevState => ({
-          formdata: prevState.formdata.concat(formItem)
-        }));
+
+        event.preventDefault();
       }
-
-      alert("Expense submitted!");
-
-      this.setState({
-        item: "",
-        description: "",
-        amount: "",
-        date: ""
+      const request = new Request("http://localhost:3001/api/new-expense", {
+        method: "POST",
+        headers: new Headers({ "Content-Type": "application/json" }),
+        body: JSON.stringify(formItem)
       });
+      let that = this;
+      let expenses = that.state.expenses;
+      expenses.push(formItem);
+      that.setState({
+        formdata: expenses
+      });
+
+      fetch(request)
+        .then(response => {
+          response.json().then(data => {});
+        })
+        .catch(function(err) {
+          console.log(err);
+        });
+
+      // this.setState(prevState => ({
+      //   formdata: prevState.formdata.concat(formItem)
+      // }));
     }
+
+    alert("Expense submitted!");
+
+    this.setState({
+      item: "",
+      description: "",
+      amount: "",
+      date: ""
+    });
+
     event.preventDefault();
   }
 
