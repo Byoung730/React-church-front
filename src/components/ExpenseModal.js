@@ -11,6 +11,7 @@ class ExpenseModal extends Component {
       description: "",
       amount: "",
       date: "",
+      id: "",
       show: false,
       formdata: [],
       expenses: []
@@ -42,17 +43,17 @@ class ExpenseModal extends Component {
   }
 
   showEditModal(event, i) {
-    const recordToEdit = this.state.formdata.filter((item, index) => {
+    const recordToEdit = this.state.expenses.filter((item, index) => {
       return index === i;
     })[0];
 
     this.setState({
       show: true,
-
       item: recordToEdit.item,
       description: recordToEdit.description,
       amount: recordToEdit.amount,
-      date: recordToEdit.date
+      date: recordToEdit.date,
+      id: recordToEdit.id
     });
   }
 
@@ -90,10 +91,30 @@ class ExpenseModal extends Component {
       alert("Please input all fields");
     } else {
       if (
-        this.state.formdata.filter(expense => expense.item === formItem.item)
+        this.state.formdata.filter(expense => expense.id === formItem.id)
           .length > 0
       ) {
         // update item
+        const request = new Request("http://localhost:3001/api/expense/:id", {
+          method: "PUT",
+          headers: new Headers({ "Content-Type": "application/json" }),
+          body: JSON.stringify(formItem)
+        });
+        let that = this;
+        let formdata = that.state.formdata;
+        formdata.push(formItem);
+        that.setState({
+          formdata: formdata
+        });
+
+        fetch(request)
+          .then(response => {
+            response.json().then(data => {});
+          })
+          .catch(function(err) {
+            console.log(err);
+          });
+
         this.setState(prevState => ({
           formdata: prevState.formdata.map(expense => {
             if (expense.item === formItem.item) return formItem;
@@ -131,6 +152,18 @@ class ExpenseModal extends Component {
     }
 
     alert("Expense submitted!");
+
+    // let that = this;
+    // fetch("http://localhost:3001/expenses").then(response => {
+    //   response.json().then(expensesData => {
+    //     let expenses = that.state.expenses;
+    //     expenses.concat(expensesData);
+    //     console.log("expenses: ", expenses);
+    //     that.setState({
+    //       expenses: expensesData
+    //     });
+    //   });
+    // });
 
     this.setState({
       item: "",
@@ -183,6 +216,7 @@ class ExpenseModal extends Component {
                   <th>Description</th>
                   <th>Amount</th>
                   <th>Date</th>
+                  <th>ID</th>
                   <th>Action</th>
                 </tr>
               </thead>
@@ -193,6 +227,7 @@ class ExpenseModal extends Component {
                     <td>{expense.description}</td>
                     <td>{expense.amount}</td>
                     <td>{expense.date}</td>
+                    <td>{expense.id}</td>
                     <td>
                       <Button onClick={e => this.showEditModal(e, i)}>
                         Update
