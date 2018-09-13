@@ -166,6 +166,7 @@ class ExpenseModal extends Component {
             console.log(err);
           });
 
+        alert("Expense updated!");
         // this.setState(prevState => ({
         //   formdata: prevState.formdata.map(expense => {
         //     if (expense.item === formItem.item) return formItem;
@@ -176,42 +177,43 @@ class ExpenseModal extends Component {
         // add new item
 
         event.preventDefault();
-      }
-      const request = new Request("http://localhost:3001/api/new-expense", {
-        method: "POST",
-        headers: new Headers({ "Content-Type": "application/json" }),
-        body: JSON.stringify(formItem)
-      });
-      let that = this;
-      let expenses = that.state.expenses;
-      expenses.push(formItem);
-      that.setState({
-        formdata: expenses
-      });
 
-      fetch(request)
-        .then(response => {
-          response.json().then(data => {});
-        })
-        .catch(function(err) {
-          console.log(err);
+        const request = new Request("http://localhost:3001/api/new-expense", {
+          method: "POST",
+          headers: new Headers({ "Content-Type": "application/json" }),
+          body: JSON.stringify(formItem)
+        });
+        let that = this;
+        let expenses = that.state.expenses;
+        expenses.push(formItem);
+        that.setState({
+          formdata: expenses
         });
 
-      // this.setState(prevState => ({
-      //   formdata: prevState.formdata.concat(formItem)
-      // }));
+        fetch(request)
+          .then(response => {
+            response.json().then(data => {});
+          })
+          .catch(function(err) {
+            console.log(err);
+          });
+
+        // this.setState(prevState => ({
+        //   formdata: prevState.formdata.concat(formItem)
+        // }));
+      }
+
+      alert("Expense submitted!");
+
+      this.setState({
+        item: "",
+        description: "",
+        amount: "",
+        date: ""
+      });
+
+      event.preventDefault();
     }
-
-    alert("Expense submitted!");
-
-    this.setState({
-      item: "",
-      description: "",
-      amount: "",
-      date: ""
-    });
-
-    event.preventDefault();
   }
 
   // let that = this;
