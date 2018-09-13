@@ -231,28 +231,21 @@ class incomeModal extends Component {
             td {
               border: 1px solid black;
               text-align: center
-            };
-              modal {
-                margin-left: 20px;
-                padding: 20px;
-                font-size: large;
-
-              }
             }`}
         </style>
         <div>
-          <Typography variant="display1">income Manager</Typography>
+          <Typography variant="display1">Income Manager</Typography>
           <Typography variant="display1">
             Total incomes: ${cleanTotal}
           </Typography>
           <ButtonToolbar>
             <Button variant="raised" color="primary" onClick={this.showModal}>
-              Add incomes
+              Add Incomes
             </Button>
             <Table>
               <thead>
                 <tr>
-                  <th>income</th>
+                  <th>Income</th>
                   <th>Description</th>
                   <th>Amount</th>
                   <th>Date</th>
@@ -301,7 +294,7 @@ class incomeModal extends Component {
                   id="contained-modal-title-lg "
                   className="text-center"
                 >
-                  Add incomes
+                  Add/edit incomes
                 </Modal.Title>
               </Modal.Header>
               <Modal.Body class="col-md-6 col-md-offset-3">
@@ -353,7 +346,9 @@ class incomeModal extends Component {
 
                   <FormGroup>
                     <Col smOffset={5} sm={4}>
-                      <Button type="submit">Add</Button>
+                      <Button variant="raised" color="primary" type="submit">
+                        Submit
+                      </Button>
                     </Col>
                   </FormGroup>
                 </Form>
