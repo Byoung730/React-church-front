@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { Form, FormControl, Col, Modal, ButtonToolbar } from "react-bootstrap";
 import { Button, Typography, Table, FormGroup } from "@material-ui/core";
+import Search from "./Search";
 
 class ExpenseModal extends Component {
   constructor(props) {
@@ -201,18 +202,18 @@ class ExpenseModal extends Component {
         // this.setState(prevState => ({
         //   formdata: prevState.formdata.concat(formItem)
         // }));
+
+        alert("Expense submitted!");
+
+        this.setState({
+          item: "",
+          description: "",
+          amount: "",
+          date: ""
+        });
+
+        event.preventDefault();
       }
-
-      alert("Expense submitted!");
-
-      this.setState({
-        item: "",
-        description: "",
-        amount: "",
-        date: ""
-      });
-
-      event.preventDefault();
     }
   }
 
@@ -265,7 +266,9 @@ class ExpenseModal extends Component {
   // }
 
   render() {
-    const reducer = (accumulator, currentValue) => accumulator + currentValue; // TODO: sum total
+    const allItems = this.state.expenses.map(expense => expense.item);
+    // <Search allItems={allItems} />
+    const reducer = (accumulator, currentValue) => accumulator + currentValue;
     var expenseAmountArray = [0];
     if (this.state.expenses.length > 0) {
       var expenseAmountArray = this.state.expenses.map(item => {
@@ -295,6 +298,7 @@ class ExpenseModal extends Component {
           <Typography variant="display1">
             Total Expenses: ${cleanTotal}
           </Typography>
+
           <ButtonToolbar>
             <Button variant="raised" color="primary" onClick={this.showModal}>
               Add Expenses
@@ -315,7 +319,7 @@ class ExpenseModal extends Component {
                   <tr key={i}>
                     <td>{expense.item}</td>
                     <td>{expense.description}</td>
-                    <td>{expense.amount}</td>
+                    <td>${expense.amount}</td>
                     <td>{expense.date}</td>
                     <td>{expense.id}</td>
                     <td>
@@ -351,7 +355,7 @@ class ExpenseModal extends Component {
                   id="contained-modal-title-lg "
                   className="text-center"
                 >
-                  Add Expenses
+                  Add/edit Expenses
                 </Modal.Title>
               </Modal.Header>
               <Modal.Body class="col-md-6 col-md-offset-3">
@@ -403,7 +407,9 @@ class ExpenseModal extends Component {
 
                   <FormGroup>
                     <Col smOffset={5} sm={4}>
-                      <Button type="submit">Add</Button>
+                      <Button variant="raised" color="primary" type="submit">
+                        Submit
+                      </Button>
                     </Col>
                   </FormGroup>
                 </Form>
