@@ -217,7 +217,7 @@ class incomeModal extends Component {
   // }
 
   render() {
-    const allItems = this.state.incomes.map(expense => expense.item);
+    const allItems = this.state.incomes.map(income => income.item);
     // <Search allItems={allItems} />
     const reducer = (accumulator, currentValue) => accumulator + currentValue; // TODO: sum total
     var incomeAmountArray = [0];
