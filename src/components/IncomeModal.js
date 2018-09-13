@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { Form, FormControl, Col, Modal, ButtonToolbar } from "react-bootstrap";
 import { Button, Typography, Table, FormGroup } from "@material-ui/core";
+import Search from "./Search";
 
 class incomeModal extends Component {
   constructor(props) {
@@ -150,20 +151,21 @@ class incomeModal extends Component {
           });
 
         alert("income submitted!");
+
+        // this.setState(prevState => ({
+        //   formdata: prevState.formdata.concat(formItem)
+        // }));
+
+        this.setState({
+          item: "",
+          description: "",
+          amount: "",
+          date: ""
+        });
+
+        event.preventDefault();
       }
-      // this.setState(prevState => ({
-      //   formdata: prevState.formdata.concat(formItem)
-      // }));
     }
-
-    this.setState({
-      item: "",
-      description: "",
-      amount: "",
-      date: ""
-    });
-
-    event.preventDefault();
   }
 
   // let that = this;
@@ -215,6 +217,8 @@ class incomeModal extends Component {
   // }
 
   render() {
+    const allItems = this.state.expenses.map(expense => expense.item);
+    // <Search allItems={allItems} />
     const reducer = (accumulator, currentValue) => accumulator + currentValue; // TODO: sum total
     var incomeAmountArray = [0];
     if (this.state.incomes.length > 0) {
@@ -238,6 +242,7 @@ class incomeModal extends Component {
           <Typography variant="display1">
             Total incomes: ${cleanTotal}
           </Typography>
+
           <ButtonToolbar>
             <Button variant="raised" color="primary" onClick={this.showModal}>
               Add Incomes
@@ -258,7 +263,7 @@ class incomeModal extends Component {
                   <tr key={i}>
                     <td>{income.item}</td>
                     <td>{income.description}</td>
-                    <td>{income.amount}</td>
+                    <td>${income.amount}</td>
                     <td>{income.date}</td>
                     <td>{income.id}</td>
                     <td>
