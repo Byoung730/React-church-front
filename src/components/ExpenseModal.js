@@ -284,13 +284,6 @@ class ExpenseModal extends Component {
             td {
               border: 1px solid black;
               text-align: center
-            };
-              modal {
-                margin-left: 20px;
-                padding: 20px;
-                font-size: large;
-
-              }
             }`}
         </style>
         <div>

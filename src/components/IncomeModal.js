@@ -26,13 +26,13 @@ class incomeModal extends Component {
   }
 
   componentDidMount() {
-    let that = this;
+    // let that = this;
     fetch("http://localhost:3001/income").then(response => {
       response.json().then(incomesData => {
-        let incomes = that.state.incomes;
+        let incomes = this.state.incomes;
         incomes.concat(incomesData);
         console.log("incomes: ", incomes);
-        that.setState({
+        this.setState({
           incomes: incomesData
         });
       });

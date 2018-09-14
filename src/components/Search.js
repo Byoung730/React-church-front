@@ -17,7 +17,7 @@ class Search extends Component {
 
   getInfo = searchValue => {
     const matches = this.state.theItems.map(i =>
-      theItems.contains(searchValue)
+      this.state.theItems.contains(searchValue)
     );
   };
 
