@@ -15,7 +15,7 @@ class incomeModal extends Component {
       id: "",
       show: false,
       formdata: [],
-      incomes: []
+      incomes: this.props.incomeList
     };
 
     this.handleSubmit = this.handleSubmit.bind(this);
@@ -23,16 +23,6 @@ class incomeModal extends Component {
     this.showModal = this.showModal.bind(this);
     this.hideModal = this.hideModal.bind(this);
     this.showEditModal = this.showEditModal.bind(this);
-  }
-
-  componentDidMount() {
-    fetch("http://localhost:3001/income").then(response => {
-      response.json().then(incomesData => {
-        this.setState({
-          incomes: incomesData
-        });
-      });
-    });
   }
 
   showModal() {
@@ -148,10 +138,6 @@ class incomeModal extends Component {
 
         alert("income submitted!");
 
-        // this.setState(prevState => ({
-        //   formdata: prevState.formdata.concat(formItem)
-        // }));
-
         this.setState({
           item: "",
           description: "",
@@ -163,18 +149,6 @@ class incomeModal extends Component {
       }
     }
   }
-
-  // let that = this;
-  // fetch("http://localhost:3001/incomes").then(response => {
-  //   response.json().then(incomesData => {
-  //     let incomes = that.state.incomes;
-  //     incomes.concat(incomesData);
-  //     console.log("incomes: ", incomes);
-  //     that.setState({
-  //       incomes: incomesData
-  //     });
-  //   });
-  // });
 
   removeincome = id => {
     alert("Are you sure you want to Delete this income?");

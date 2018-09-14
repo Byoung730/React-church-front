@@ -1,4 +1,4 @@
-import React, { Fragment } from "react";
+import React, { Component, Fragment } from "react";
 import { Route } from "react-router-dom";
 import { CssBaseline, withStyles } from "@material-ui/core";
 import "./App.css";
@@ -7,25 +7,51 @@ import AppHeader from "./components/AppHeader";
 import ExpenseModal from "./components/ExpenseModal";
 import IncomeModal from "./components/IncomeModal";
 
-const styles = theme => ({
-  main: {
-    padding: 3 * theme.spacing.unit,
-    [theme.breakpoints.down("xs")]: {
-      padding: 2 * theme.spacing.unit
-    }
+class App extends Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      incomes: [],
+      expenses: []
+    };
   }
-});
 
-const App = ({ classes }) => (
-  <Fragment>
-    <CssBaseline />
-    <AppHeader />
-    <main className={classes.main}>
-      <Route exact path="/" component={Home} />
-      <Route exact path="/expense" component={ExpenseModal} />
-      <Route exact path="/income" component={IncomeModal} />
-    </main>
-  </Fragment>
-);
+  componentDidMount() {
+    fetch("http://localhost:3001/expenses").then(response => {
+      response.json().then(expensesData => {
+        this.setState({
+          expenses: expensesData
+        });
+      });
+    });
+    fetch("http://localhost:3001/income").then(response => {
+      response.json().then(incomesData => {
+        this.setState({
+          incomes: incomesData
+        });
+      });
+    });
+  }
 
-export default withStyles(styles)(App);
+  render() {
+    return (
+      <Fragment>
+        <AppHeader />
+        <Route exact path="/" component={Home} />
+        <Route
+          exact
+          path="/expense"
+          component={() => <ExpenseModal expenseList={this.state.expenses} />}
+        />
+        <Route
+          exact
+          path="/income"
+          component={() => <IncomeModal incomeList={this.state.incomes} />}
+        />
+      </Fragment>
+    );
+  }
+}
+
+export default App;

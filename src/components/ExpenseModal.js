@@ -15,7 +15,7 @@ class ExpenseModal extends Component {
       id: "",
       show: false,
       formdata: [],
-      expenses: []
+      expenses: this.props.expenseList
     };
 
     this.handleSubmit = this.handleSubmit.bind(this);
@@ -23,16 +23,6 @@ class ExpenseModal extends Component {
     this.showModal = this.showModal.bind(this);
     this.hideModal = this.hideModal.bind(this);
     this.showEditModal = this.showEditModal.bind(this);
-  }
-
-  componentDidMount() {
-    fetch("http://localhost:3001/expenses").then(response => {
-      response.json().then(expensesData => {
-        this.setState({
-          expenses: expensesData
-        });
-      });
-    });
   }
 
   showModal() {
@@ -115,12 +105,6 @@ class ExpenseModal extends Component {
           });
 
         alert("Expense updated!");
-        // this.setState(prevState => ({
-        //   formdata: prevState.formdata.map(expense => {
-        //     if (expense.item === formItem.item) return formItem;
-        //     else return expense;
-        //   })
-        // }));
       } else {
         // add new item
 
@@ -163,18 +147,6 @@ class ExpenseModal extends Component {
       }
     }
   }
-
-  // let that = this;
-  // fetch("http://localhost:3001/expenses").then(response => {
-  //   response.json().then(expensesData => {
-  //     let expenses = that.state.expenses;
-  //     expenses.concat(expensesData);
-  //     console.log("expenses: ", expenses);
-  //     that.setState({
-  //       expenses: expensesData
-  //     });
-  //   });
-  // });
 
   removeExpense = id => {
     alert("Are you sure you want to Delete this expense?");
