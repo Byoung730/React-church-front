@@ -26,12 +26,8 @@ class incomeModal extends Component {
   }
 
   componentDidMount() {
-    // let that = this;
     fetch("http://localhost:3001/income").then(response => {
       response.json().then(incomesData => {
-        let incomes = this.state.incomes;
-        incomes.concat(incomesData);
-        console.log("incomes: ", incomes);
         this.setState({
           incomes: incomesData
         });
@@ -217,7 +213,8 @@ class incomeModal extends Component {
   // }
 
   render() {
-    const allItems = this.state.incomes.map(income => income.item);
+    const items = this.state.incomes;
+    const allItems = items.map(income => income.item);
     // <Search allItems={allItems} />
     const reducer = (accumulator, currentValue) => accumulator + currentValue; // TODO: sum total
     var incomeAmountArray = [0];
