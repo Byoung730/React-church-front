@@ -3,7 +3,7 @@ import { Form, FormControl, Col, Modal, ButtonToolbar } from "react-bootstrap";
 import { Button, Typography, Table, FormGroup } from "@material-ui/core";
 import Search from "./Search";
 
-class ExpenseModal extends Component {
+class incomeModal extends Component {
   constructor(props) {
     super(props);
 
@@ -15,7 +15,7 @@ class ExpenseModal extends Component {
       id: "",
       show: false,
       formdata: [],
-      expenses: this.props.expenseList
+      incomes: this.props.incomeList
     };
 
     this.handleSubmit = this.handleSubmit.bind(this);
@@ -30,7 +30,7 @@ class ExpenseModal extends Component {
   }
 
   showEditModal(event, i) {
-    const recordToEdit = this.state.expenses.filter((item, index) => {
+    const recordToEdit = this.state.incomes.filter((item, index) => {
       return index === i;
     })[0];
 
@@ -69,7 +69,7 @@ class ExpenseModal extends Component {
       date: this.state.date,
       id: this.state.id
     };
-    const allIds = this.state.expenses.map(expense => expense.id);
+    const allIds = this.state.incomes.map(income => income.id);
     console.log("allIds: ", allIds);
     console.log("formItem: ", formItem);
     console.log("is it in there? ", allIds.includes(this.state.id));
@@ -84,7 +84,7 @@ class ExpenseModal extends Component {
       if (allIds.includes(this.state.id)) {
         // update item
 
-        const request = new Request("http://localhost:3001/api/expenses/:id", {
+        const request = new Request("http://localhost:3001/api/income/:id", {
           method: "PUT",
           headers: new Headers({ "Content-Type": "application/json" }),
           body: JSON.stringify(formItem)
@@ -104,22 +104,28 @@ class ExpenseModal extends Component {
             console.log(err);
           });
 
-        alert("Expense updated!");
+        alert("income updated!");
+
+        this.setState(prevState => ({
+          formdata: prevState.formdata.map(income => {
+            if (income.item === formItem.item) return formItem;
+            else return income;
+          })
+        }));
       } else {
         // add new item
 
         event.preventDefault();
-
-        const request = new Request("http://localhost:3001/api/new-expense", {
+        const request = new Request("http://localhost:3001/api/new-income", {
           method: "POST",
           headers: new Headers({ "Content-Type": "application/json" }),
           body: JSON.stringify(formItem)
         });
         let that = this;
-        let expenses = that.state.expenses;
-        expenses.push(formItem);
+        let incomes = that.state.incomes;
+        incomes.push(formItem);
         that.setState({
-          formdata: expenses
+          formdata: incomes
         });
 
         fetch(request)
@@ -130,11 +136,7 @@ class ExpenseModal extends Component {
             console.log(err);
           });
 
-        // this.setState(prevState => ({
-        //   formdata: prevState.formdata.concat(formItem)
-        // }));
-
-        alert("Expense submitted!");
+        alert("income submitted!");
 
         this.setState({
           item: "",
@@ -148,16 +150,16 @@ class ExpenseModal extends Component {
     }
   }
 
-  removeExpense = id => {
-    alert("Are you sure you want to Delete this expense?");
+  removeincome = id => {
+    alert("Are you sure you want to Delete this income?");
     let that = this;
-    let expenses = this.state.expenses;
-    let expense = expenses.find(expense => {
-      return expense.id === id;
+    let incomes = this.state.incomes;
+    let income = incomes.find(income => {
+      return income.id === id;
     });
 
     const request = new Request(
-      "http://localhost:3001/api/remove-expense/" + id,
+      "http://localhost:3001/api/remove-income/" + id,
       {
         method: "DELETE"
       }
@@ -165,9 +167,9 @@ class ExpenseModal extends Component {
 
     console.log(id);
     fetch(request).then(response => {
-      expenses.splice(expenses.indexOf(expense), 1);
+      incomes.splice(incomes.indexOf(income), 1);
       that.setState({
-        expenses: expenses
+        incomes: incomes
       });
       response.json().then(data => {
         console.log(data);
@@ -175,52 +177,46 @@ class ExpenseModal extends Component {
     });
   };
 
-  // deleteExpense(i) {
-  //   alert("Are you sure you want to Delete this expense?");
-  //   this.setState({
-  //     formdata: this.state.formdata.filter((item, index) => {
-  //       return index !== i;
-  //     })
-  //   });
-  // }
-
   render() {
-    const items = this.state.expenses;
+    const items = this.state.incomes;
     if (items && items.length > 0) {
-      const allItems = this.state.expenses.map(expense => expense.item);
+      const allItems = items.map(income => income.item);
       // <Search allItems={allItems} />
       const reducer = (accumulator, currentValue) => accumulator + currentValue;
-      var expenseAmountArray = [0];
-      if (this.state.expenses.length > 0) {
-        var expenseAmountArray = this.state.expenses.map(item => {
+      var incomeAmountArray = [0];
+      if (this.state.incomes.length > 0) {
+        var incomeAmountArray = this.state.incomes.map(item => {
           return Number(item.amount);
         });
       }
-      let total = expenseAmountArray.reduce(reducer);
+      let total = incomeAmountArray.reduce(reducer);
       let cleanTotal = total.toFixed(2);
       return (
         <div>
           <style>
             {`
+
             td {
               border: 1px solid black;
               text-align: center
             }`}
           </style>
           <div>
-            <Typography variant="display1">Expense Manager</Typography>
+            <Typography variant="display1" gutterBottom={true}>
+              Income Manager
+            </Typography>
             <Typography variant="display1">
-              Total Expenses: ${cleanTotal}
+              Total incomes: ${cleanTotal}
             </Typography>
 
             <ButtonToolbar>
               <Button variant="raised" color="primary" onClick={this.showModal}>
-                Add Expenses
+                Add Incomes
               </Button>
               <Table>
                 <thead>
                   <tr>
-                    <th>Expense</th>
+                    <th>Income</th>
                     <th>Description</th>
                     <th>Amount</th>
                     <th>Date</th>
@@ -229,13 +225,13 @@ class ExpenseModal extends Component {
                   </tr>
                 </thead>
                 <tbody>
-                  {this.state.expenses.map((expense, i) => (
+                  {this.state.incomes.map((income, i) => (
                     <tr key={i}>
-                      <td>{expense.item}</td>
-                      <td>{expense.description}</td>
-                      <td>${expense.amount}</td>
-                      <td>{expense.date}</td>
-                      <td>{expense.id}</td>
+                      <td>{income.item}</td>
+                      <td>{income.description}</td>
+                      <td>${income.amount}</td>
+                      <td>{income.date}</td>
+                      <td>{income.id}</td>
                       <td>
                         <Button
                           variant="raised"
@@ -247,7 +243,7 @@ class ExpenseModal extends Component {
                         <Button
                           variant="raised"
                           color="secondary"
-                          onClick={() => this.removeExpense(expense.id)}
+                          onClick={() => this.removeincome(income.id)}
                         >
                           Delete
                         </Button>
@@ -269,7 +265,7 @@ class ExpenseModal extends Component {
                     id="contained-modal-title-lg "
                     className="text-center"
                   >
-                    Add/edit Expenses
+                    Add/edit incomes
                   </Modal.Title>
                 </Modal.Header>
                 <Modal.Body class="col-md-6 col-md-offset-3">
@@ -334,6 +330,7 @@ class ExpenseModal extends Component {
         </div>
       );
     }
+
     return (
       <Typography variant="display1">
         Slow data connection...Please wait a moment and refresh the page
@@ -341,4 +338,4 @@ class ExpenseModal extends Component {
     );
   }
 }
-export default ExpenseModal;
+export default incomeModal;
