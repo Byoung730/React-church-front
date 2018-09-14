@@ -11,11 +11,22 @@ class Search extends Component {
     };
   }
 
+  myReceivingFunction = props => {
+    this.setState({ theItems: this.props.allItems });
+  };
+
+  getInfo = searchValue => {
+    const matches = this.state.theItems.map(i =>
+      this.state.theItems.contains(searchValue)
+    );
+  };
+
   myCallback = props => {
     this.setState({ theItems: this.props.allItems });
   };
 
   getInfo = () => {};
+
 
   handleInputChange = () => {
     this.setState(
@@ -25,7 +36,9 @@ class Search extends Component {
       () => {
         if (this.state.query && this.state.query.length > 1) {
           if (this.state.query.length % 2 === 0) {
-            this.getInfo();
+
+            this.getInfo(this.state.query);
+
           }
         }
       }

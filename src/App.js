@@ -1,17 +1,11 @@
 import React, { Fragment } from "react";
-// import axios from "axios";
-// import logo from "./logo.svg";
 import { Route } from "react-router-dom";
 import { CssBaseline, withStyles } from "@material-ui/core";
 import "./App.css";
-// import People from "./components/People";
 import Home from "./pages/Home";
-// import PeopleManager from "./pages/PeopleManager";
 import AppHeader from "./components/AppHeader";
 import ExpenseModal from "./components/ExpenseModal";
 import IncomeModal from "./components/IncomeModal";
-
-// axios.defaults.baseURL = "http://localhost:3001/api";
 
 const styles = theme => ({
   main: {
