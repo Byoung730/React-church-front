@@ -214,7 +214,7 @@ class ExpenseModal extends Component {
 
   render() {
     const items = this.state.expenses;
-    if (items && items.map && items.length > 0) {
+    if (items && items.length > 0) {
       const allItems = this.state.expenses.map(expense => expense.item);
       // <Search allItems={allItems} />
       const reducer = (accumulator, currentValue) => accumulator + currentValue;
