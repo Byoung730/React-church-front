@@ -203,162 +203,161 @@ class incomeModal extends Component {
     });
   };
 
-  // deleteincome(i) {
-  //   alert("Are you sure you want to Delete this income?");
-  //   this.setState({
-  //     formdata: this.state.formdata.filter((item, index) => {
-  //       return index !== i;
-  //     })
-  //   });
-  // }
-
   render() {
     const items = this.state.incomes;
-    const allItems = items.map(income => income.item);
-    // <Search allItems={allItems} />
-    const reducer = (accumulator, currentValue) => accumulator + currentValue; // TODO: sum total
-    var incomeAmountArray = [0];
-    if (this.state.incomes.length > 0) {
-      var incomeAmountArray = this.state.incomes.map(item => {
-        return Number(item.amount);
-      });
-    }
-    let total = incomeAmountArray.reduce(reducer);
-    let cleanTotal = total.toFixed(2);
-    return (
-      <div>
-        <style>
-          {`
+    if (items && items.map && items.length > 0) {
+      const allItems = items.map(income => income.item);
+      // <Search allItems={allItems} />
+      const reducer = (accumulator, currentValue) => accumulator + currentValue;
+      var incomeAmountArray = [0];
+      if (this.state.incomes.length > 0) {
+        var incomeAmountArray = this.state.incomes.map(item => {
+          return Number(item.amount);
+        });
+      }
+      let total = incomeAmountArray.reduce(reducer);
+      let cleanTotal = total.toFixed(2);
+      return (
+        <div>
+          <style>
+            {`
             td {
               border: 1px solid black;
               text-align: center
             }`}
-        </style>
-        <div>
-          <Typography variant="display1">Income Manager</Typography>
-          <Typography variant="display1">
-            Total incomes: ${cleanTotal}
-          </Typography>
+          </style>
+          <div>
+            <Typography variant="display1">Income Manager</Typography>
+            <Typography variant="display1">
+              Total incomes: ${cleanTotal}
+            </Typography>
 
-          <ButtonToolbar>
-            <Button variant="raised" color="primary" onClick={this.showModal}>
-              Add Incomes
-            </Button>
-            <Table>
-              <thead>
-                <tr>
-                  <th>Income</th>
-                  <th>Description</th>
-                  <th>Amount</th>
-                  <th>Date</th>
-                  <th>ID</th>
-                  <th>Action</th>
-                </tr>
-              </thead>
-              <tbody>
-                {this.state.incomes.map((income, i) => (
-                  <tr key={i}>
-                    <td>{income.item}</td>
-                    <td>{income.description}</td>
-                    <td>${income.amount}</td>
-                    <td>{income.date}</td>
-                    <td>{income.id}</td>
-                    <td>
-                      <Button
-                        variant="raised"
-                        color="primary"
-                        onClick={e => this.showEditModal(e, i)}
-                      >
-                        Update
-                      </Button>
-                      <Button
-                        variant="raised"
-                        color="secondary"
-                        onClick={() => this.removeincome(income.id)}
-                      >
-                        Delete
-                      </Button>
-                    </td>
-                    <td />
+            <ButtonToolbar>
+              <Button variant="raised" color="primary" onClick={this.showModal}>
+                Add Incomes
+              </Button>
+              <Table>
+                <thead>
+                  <tr>
+                    <th>Income</th>
+                    <th>Description</th>
+                    <th>Amount</th>
+                    <th>Date</th>
+                    <th>ID</th>
+                    <th>Action</th>
                   </tr>
-                ))}
-              </tbody>
-            </Table>
-            <Modal
-              {...this.props}
-              show={this.state.show}
-              onHide={this.hideModal}
-              dialogClassName="custom-modal"
-              class="col-md-6 col-md-offset-3"
-            >
-              <Modal.Header closeButton>
-                <Modal.Title
-                  id="contained-modal-title-lg "
-                  className="text-center"
-                >
-                  Add/edit incomes
-                </Modal.Title>
-              </Modal.Header>
-              <Modal.Body class="col-md-6 col-md-offset-3">
-                <Form horizontal onSubmit={this.handleSubmit}>
-                  <FormGroup>
-                    <Col smOffset={4} sm={4}>
-                      <FormControl
-                        type="Text"
-                        placeholder="item"
-                        name="item"
-                        value={this.state.item}
-                        onChange={this.handleInputChange}
-                      />
-                    </Col>
-                  </FormGroup>
-                  <FormGroup>
-                    <Col smOffset={4} sm={4}>
-                      <FormControl
-                        type="description"
-                        placeholder="description"
-                        name="description"
-                        value={this.state.description}
-                        onChange={this.handleInputChange}
-                      />
-                    </Col>
-                  </FormGroup>
-                  <FormGroup>
-                    <Col smOffset={4} sm={4}>
-                      <FormControl
-                        type="amount"
-                        placeholder="amount"
-                        name="amount"
-                        value={this.state.amount}
-                        onChange={this.handleInputChange}
-                      />
-                    </Col>
-                  </FormGroup>
-                  <FormGroup>
-                    <Col smOffset={4} sm={4}>
-                      <FormControl
-                        type="date"
-                        placeholder="date"
-                        name="date"
-                        value={this.state.date}
-                        onChange={this.handleInputChange}
-                      />
-                    </Col>
-                  </FormGroup>
+                </thead>
+                <tbody>
+                  {this.state.incomes.map((income, i) => (
+                    <tr key={i}>
+                      <td>{income.item}</td>
+                      <td>{income.description}</td>
+                      <td>${income.amount}</td>
+                      <td>{income.date}</td>
+                      <td>{income.id}</td>
+                      <td>
+                        <Button
+                          variant="raised"
+                          color="primary"
+                          onClick={e => this.showEditModal(e, i)}
+                        >
+                          Update
+                        </Button>
+                        <Button
+                          variant="raised"
+                          color="secondary"
+                          onClick={() => this.removeincome(income.id)}
+                        >
+                          Delete
+                        </Button>
+                      </td>
+                      <td />
+                    </tr>
+                  ))}
+                </tbody>
+              </Table>
+              <Modal
+                {...this.props}
+                show={this.state.show}
+                onHide={this.hideModal}
+                dialogClassName="custom-modal"
+                class="col-md-6 col-md-offset-3"
+              >
+                <Modal.Header closeButton>
+                  <Modal.Title
+                    id="contained-modal-title-lg "
+                    className="text-center"
+                  >
+                    Add/edit incomes
+                  </Modal.Title>
+                </Modal.Header>
+                <Modal.Body class="col-md-6 col-md-offset-3">
+                  <Form horizontal onSubmit={this.handleSubmit}>
+                    <FormGroup>
+                      <Col smOffset={4} sm={4}>
+                        <FormControl
+                          type="Text"
+                          placeholder="item"
+                          name="item"
+                          value={this.state.item}
+                          onChange={this.handleInputChange}
+                        />
+                      </Col>
+                    </FormGroup>
+                    <FormGroup>
+                      <Col smOffset={4} sm={4}>
+                        <FormControl
+                          type="description"
+                          placeholder="description"
+                          name="description"
+                          value={this.state.description}
+                          onChange={this.handleInputChange}
+                        />
+                      </Col>
+                    </FormGroup>
+                    <FormGroup>
+                      <Col smOffset={4} sm={4}>
+                        <FormControl
+                          type="amount"
+                          placeholder="amount"
+                          name="amount"
+                          value={this.state.amount}
+                          onChange={this.handleInputChange}
+                        />
+                      </Col>
+                    </FormGroup>
+                    <FormGroup>
+                      <Col smOffset={4} sm={4}>
+                        <FormControl
+                          type="date"
+                          placeholder="date"
+                          name="date"
+                          value={this.state.date}
+                          onChange={this.handleInputChange}
+                        />
+                      </Col>
+                    </FormGroup>
 
-                  <FormGroup>
-                    <Col smOffset={5} sm={4}>
-                      <Button variant="raised" color="primary" type="submit">
-                        Submit
-                      </Button>
-                    </Col>
-                  </FormGroup>
-                </Form>
-              </Modal.Body>
-            </Modal>
-          </ButtonToolbar>
+                    <FormGroup>
+                      <Col smOffset={5} sm={4}>
+                        <Button variant="raised" color="primary" type="submit">
+                          Submit
+                        </Button>
+                      </Col>
+                    </FormGroup>
+                  </Form>
+                </Modal.Body>
+              </Modal>
+            </ButtonToolbar>
+          </div>
         </div>
-      </div>
+      );
+    }
+
+    return (
+      <Typography variant="display1">
+        Slow data connection...Please wait a moment and refresh the page
+      </Typography>
     );
   }
 }
