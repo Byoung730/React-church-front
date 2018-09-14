@@ -221,6 +221,7 @@ class incomeModal extends Component {
         <div>
           <style>
             {`
+
             td {
               border: 1px solid black;
               text-align: center

@@ -21,6 +21,13 @@ class Search extends Component {
     );
   };
 
+  myCallback = props => {
+    this.setState({ theItems: this.props.allItems });
+  };
+
+  getInfo = () => {};
+
+
   handleInputChange = () => {
     this.setState(
       {
@@ -29,7 +36,9 @@ class Search extends Component {
       () => {
         if (this.state.query && this.state.query.length > 1) {
           if (this.state.query.length % 2 === 0) {
+
             this.getInfo(this.state.query);
+
           }
         }
       }
