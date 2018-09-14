@@ -181,7 +181,6 @@ class incomeModal extends Component {
     const items = this.state.incomes;
     if (items && items.length > 0) {
       const allItems = items.map(income => income.item);
-      // <Search allItems={allItems} />
       const reducer = (accumulator, currentValue) => accumulator + currentValue;
       var incomeAmountArray = [0];
       if (this.state.incomes.length > 0) {
@@ -208,7 +207,7 @@ class incomeModal extends Component {
             <Typography variant="display1">
               Total incomes: ${cleanTotal}
             </Typography>
-
+            <Search searchField={allItems} />
             <ButtonToolbar>
               <Button variant="raised" color="primary" onClick={this.showModal}>
                 Add Incomes

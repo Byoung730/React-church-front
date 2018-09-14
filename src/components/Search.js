@@ -7,7 +7,7 @@ class Search extends Component {
     this.state = {
       theItems: null,
       query: "",
-      results: []
+      searchField: this.props.searchField
     };
   }
 
@@ -27,7 +27,6 @@ class Search extends Component {
 
   getInfo = () => {};
 
-
   handleInputChange = () => {
     this.setState(
       {
@@ -36,9 +35,7 @@ class Search extends Component {
       () => {
         if (this.state.query && this.state.query.length > 1) {
           if (this.state.query.length % 2 === 0) {
-
             this.getInfo(this.state.query);
-
           }
         }
       }

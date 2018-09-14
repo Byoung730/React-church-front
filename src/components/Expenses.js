@@ -188,7 +188,6 @@ class ExpenseModal extends Component {
     const items = this.state.expenses;
     if (items && items.length > 0) {
       const allItems = this.state.expenses.map(expense => expense.item);
-      // <Search allItems={allItems} />
       const reducer = (accumulator, currentValue) => accumulator + currentValue;
       var expenseAmountArray = [0];
       if (this.state.expenses.length > 0) {
@@ -214,7 +213,7 @@ class ExpenseModal extends Component {
             <Typography variant="display1">
               Total Expenses: ${cleanTotal}
             </Typography>
-
+            <Search searchField={allItems} />
             <ButtonToolbar>
               <Button variant="raised" color="primary" onClick={this.showModal}>
                 Add Expenses

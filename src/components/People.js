@@ -189,8 +189,7 @@ class People extends Component {
   render() {
     const items = this.state.people;
     if (items && items.length > 0) {
-      const allItems = items.map(person => person.item);
-      // <Search allItems={allItems} />
+      const allNames = items.map(person => person.name);
       return (
         <div>
           <style>
@@ -204,6 +203,7 @@ class People extends Component {
             <Typography variant="display1" gutterBottom={true}>
               People Manager
             </Typography>
+            <Search searchField={allNames} />
             <ButtonToolbar>
               <Button variant="raised" color="primary" onClick={this.showModal}>
                 Add People
