@@ -30,6 +30,9 @@ const AppHeader = ({ classes }) => (
       <Button color="inherit" component={Link} to="/income">
         Income Manager
       </Button>
+      <Button color="inherit" component={Link} to="/people">
+        People Manager
+      </Button>
       <div className={classes.flex} />
       <Button color="inherit" disabled>
         Login

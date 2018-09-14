@@ -3,19 +3,20 @@ import { Form, FormControl, Col, Modal, ButtonToolbar } from "react-bootstrap";
 import { Button, Typography, Table, FormGroup } from "@material-ui/core";
 import Search from "./Search";
 
-class incomeModal extends Component {
+class People extends Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      item: "",
-      description: "",
-      amount: "",
-      date: "",
+      email: "",
+      name: "",
+      address: "",
+      phone: "",
+      date_joined: "",
       id: "",
       show: false,
       formdata: [],
-      incomes: this.props.incomeList
+      people: this.props.peopleList
     };
 
     this.handleSubmit = this.handleSubmit.bind(this);
@@ -30,32 +31,36 @@ class incomeModal extends Component {
   }
 
   showEditModal(event, i) {
-    const recordToEdit = this.state.incomes.filter((item, index) => {
+    const recordToEdit = this.state.people.filter((item, index) => {
       return index === i;
     })[0];
 
     this.setState({
       show: true,
-      item: recordToEdit.item,
-      description: recordToEdit.description,
-      amount: recordToEdit.amount,
-      date: recordToEdit.date,
-      id: recordToEdit.id
+      email: recordToEdit.email,
+      name: recordToEdit.name,
+      address: recordToEdit.address,
+      date_joined: recordToEdit.date_joined,
+      id: recordToEdit.id,
+      phone: recordToEdit.phone
     });
   }
 
   hideModal() {
     this.setState({
       show: false,
-      item: "",
-      description: "",
-      amount: "",
-      date: ""
+      email: "",
+      name: "",
+      address: "",
+      date_joined: "",
+      phone: ""
     });
   }
 
   handleInputChange(event) {
+    console.log(event.target.value);
     // update the input that changed
+
     this.setState({
       [event.target.name]: event.target.value
     });
@@ -63,28 +68,30 @@ class incomeModal extends Component {
 
   handleSubmit(event) {
     const formItem = {
-      item: this.state.item,
-      description: this.state.description,
-      amount: this.state.amount,
-      date: this.state.date,
-      id: this.state.id
+      email: this.state.email,
+      name: this.state.name,
+      address: this.state.address,
+      date_joined: this.state.date_joined,
+      id: this.state.id,
+      phone: this.state.phone
     };
-    const allIds = this.state.incomes.map(income => income.id);
+    const allIds = this.state.people.map(person => person.id);
     console.log("allIds: ", allIds);
     console.log("formItem: ", formItem);
     console.log("is it in there? ", allIds.includes(this.state.id));
     if (
-      this.state.item === "" ||
-      this.state.description === "" ||
-      this.state.amount === "" ||
-      this.state.date === ""
+      this.state.email === "" ||
+      this.state.name === "" ||
+      this.state.address === "" ||
+      this.state.date_joined === "" ||
+      this.state.phone === ""
     ) {
       alert("Please input all fields");
     } else {
       if (allIds.includes(this.state.id)) {
         // update item
 
-        const request = new Request("http://localhost:3001/api/income/:id", {
+        const request = new Request("http://localhost:3001/api/people/:id", {
           method: "PUT",
           headers: new Headers({ "Content-Type": "application/json" }),
           body: JSON.stringify(formItem)
@@ -104,45 +111,47 @@ class incomeModal extends Component {
             console.log(err);
           });
 
-        alert("income updated!");
+        alert("person updated!");
 
         this.setState(prevState => ({
-          formdata: prevState.formdata.map(income => {
-            if (income.item === formItem.item) return formItem;
-            else return income;
+          formdata: prevState.formdata.map(person => {
+            if (person.item === formItem.item) return formItem;
+            else return person;
           })
         }));
       } else {
         // add new item
 
         event.preventDefault();
-        const request = new Request("http://localhost:3001/api/new-income", {
+        const request = new Request("http://localhost:3001/api/new-people", {
           method: "POST",
           headers: new Headers({ "Content-Type": "application/json" }),
           body: JSON.stringify(formItem)
         });
         let that = this;
-        let incomes = that.state.incomes;
-        incomes.push(formItem);
+        let people = that.state.people;
+        people.push(formItem);
         that.setState({
-          formdata: incomes
+          formdata: people
         });
 
         fetch(request)
           .then(response => {
             response.json().then(data => {});
           })
-          .catch(function(err) {
+          .catch(err => {
             console.log(err);
           });
 
-        alert("income submitted!");
+        alert("person submitted!");
 
         this.setState({
-          item: "",
-          description: "",
-          amount: "",
-          date: ""
+          email: "",
+          name: "",
+          address: "",
+          date_joined: "",
+          id: "",
+          phone: ""
         });
 
         event.preventDefault();
@@ -150,16 +159,16 @@ class incomeModal extends Component {
     }
   }
 
-  removeincome = id => {
-    alert("Are you sure you want to Delete this income?");
+  removeperson = id => {
+    alert("Are you sure you want to Delete this person?");
     let that = this;
-    let incomes = this.state.incomes;
-    let income = incomes.find(income => {
-      return income.id === id;
+    let people = this.state.people;
+    let person = people.find(person => {
+      return person.id === id;
     });
 
     const request = new Request(
-      "http://localhost:3001/api/remove-income/" + id,
+      "http://localhost:3001/api/remove-person/" + id,
       {
         method: "DELETE"
       }
@@ -167,9 +176,9 @@ class incomeModal extends Component {
 
     console.log(id);
     fetch(request).then(response => {
-      incomes.splice(incomes.indexOf(income), 1);
+      people.splice(people.indexOf(person), 1);
       that.setState({
-        incomes: incomes
+        people: people
       });
       response.json().then(data => {
         console.log(data);
@@ -178,58 +187,47 @@ class incomeModal extends Component {
   };
 
   render() {
-    const items = this.state.incomes;
+    const items = this.state.people;
     if (items && items.length > 0) {
-      const allItems = items.map(income => income.item);
+      const allItems = items.map(person => person.item);
       // <Search allItems={allItems} />
-      const reducer = (accumulator, currentValue) => accumulator + currentValue;
-      var incomeAmountArray = [0];
-      if (this.state.incomes.length > 0) {
-        var incomeAmountArray = this.state.incomes.map(item => {
-          return Number(item.amount);
-        });
-      }
-      let total = incomeAmountArray.reduce(reducer);
-      let cleanTotal = total.toFixed(2);
       return (
         <div>
           <style>
             {`
-
             td {
               border: 1px solid black;
               text-align: center
             }`}
           </style>
           <div>
-            <Typography variant="display1">Income Manager</Typography>
-            <Typography variant="display1">
-              Total incomes: ${cleanTotal}
+            <Typography variant="display1" gutterBottom={true}>
+              People Manager
             </Typography>
-
             <ButtonToolbar>
               <Button variant="raised" color="primary" onClick={this.showModal}>
-                Add Incomes
+                Add People
               </Button>
               <Table>
                 <thead>
                   <tr>
-                    <th>Income</th>
-                    <th>Description</th>
-                    <th>Amount</th>
-                    <th>Date</th>
+                    <th>Email</th>
+                    <th>Name</th>
+                    <th>Address</th>
+                    <th>Phone Number</th>
                     <th>ID</th>
-                    <th>Action</th>
+                    <th>Date Joined</th>
                   </tr>
                 </thead>
                 <tbody>
-                  {this.state.incomes.map((income, i) => (
+                  {this.state.people.map((person, i) => (
                     <tr key={i}>
-                      <td>{income.item}</td>
-                      <td>{income.description}</td>
-                      <td>${income.amount}</td>
-                      <td>{income.date}</td>
-                      <td>{income.id}</td>
+                      <td>{person.email}</td>
+                      <td>{person.name}</td>
+                      <td>{person.address}</td>
+                      <td>{person.phone}</td>
+                      <td>{person.id}</td>
+                      <td>{person.date_joined}</td>
                       <td>
                         <Button
                           variant="raised"
@@ -241,7 +239,7 @@ class incomeModal extends Component {
                         <Button
                           variant="raised"
                           color="secondary"
-                          onClick={() => this.removeincome(income.id)}
+                          onClick={() => this.removeperson(person.id)}
                         >
                           Delete
                         </Button>
@@ -263,7 +261,7 @@ class incomeModal extends Component {
                     id="contained-modal-title-lg "
                     className="text-center"
                   >
-                    Add/edit incomes
+                    Add/edit people
                   </Modal.Title>
                 </Modal.Header>
                 <Modal.Body class="col-md-6 col-md-offset-3">
@@ -272,9 +270,9 @@ class incomeModal extends Component {
                       <Col smOffset={4} sm={4}>
                         <FormControl
                           type="Text"
-                          placeholder="item"
-                          name="item"
-                          value={this.state.item}
+                          placeholder="Email"
+                          name="email"
+                          value={this.state.email}
                           onChange={this.handleInputChange}
                         />
                       </Col>
@@ -282,10 +280,10 @@ class incomeModal extends Component {
                     <FormGroup>
                       <Col smOffset={4} sm={4}>
                         <FormControl
-                          type="description"
-                          placeholder="description"
-                          name="description"
-                          value={this.state.description}
+                          type="Text"
+                          placeholder="Name"
+                          name="name"
+                          value={this.state.name}
                           onChange={this.handleInputChange}
                         />
                       </Col>
@@ -293,10 +291,21 @@ class incomeModal extends Component {
                     <FormGroup>
                       <Col smOffset={4} sm={4}>
                         <FormControl
-                          type="amount"
-                          placeholder="amount"
-                          name="amount"
-                          value={this.state.amount}
+                          type="Text"
+                          placeholder="Address"
+                          name="address"
+                          value={this.state.address}
+                          onChange={this.handleInputChange}
+                        />
+                      </Col>
+                    </FormGroup>
+                    <FormGroup>
+                      <Col smOffset={4} sm={4}>
+                        <FormControl
+                          type="Text"
+                          placeholder="Phone Number"
+                          name="phone"
+                          value={this.state.phone}
                           onChange={this.handleInputChange}
                         />
                       </Col>
@@ -305,14 +314,13 @@ class incomeModal extends Component {
                       <Col smOffset={4} sm={4}>
                         <FormControl
                           type="date"
-                          placeholder="date"
-                          name="date"
-                          value={this.state.date}
+                          placeholder="Date joined"
+                          name="date_joined"
+                          value={this.state.date_joined}
                           onChange={this.handleInputChange}
                         />
                       </Col>
                     </FormGroup>
-
                     <FormGroup>
                       <Col smOffset={5} sm={4}>
                         <Button variant="raised" color="primary" type="submit">
@@ -336,4 +344,4 @@ class incomeModal extends Component {
     );
   }
 }
-export default incomeModal;
+export default People;

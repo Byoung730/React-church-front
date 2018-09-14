@@ -1,10 +1,23 @@
 import React from "react";
+import logo from "../logo.svg";
 import { Typography } from "@material-ui/core";
 
 export default () => (
   <div>
-    <Typography variant="display2">Welcome!</Typography>
-    <Typography variant="display1">
+    <style>
+      {`
+      img {
+        display: block;
+    margin-left: auto;
+    margin-right: auto;
+    width: 50%;
+      }`}
+    </style>
+    <Typography align="center" gutterBottom={true} variant="display4">
+      Welcome!
+    </Typography>
+    <img src={logo} className="App-logo" alt="logo" />
+    <Typography align="center" variant="display1">
       Feel free to use the navigation bar at the top of the screen to manage
       your data...Enjoy!
     </Typography>

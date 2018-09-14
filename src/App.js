@@ -4,8 +4,9 @@ import { CssBaseline, withStyles } from "@material-ui/core";
 import "./App.css";
 import Home from "./pages/Home";
 import AppHeader from "./components/AppHeader";
-import ExpenseModal from "./components/ExpenseModal";
-import IncomeModal from "./components/IncomeModal";
+import Expenses from "./components/Expenses";
+import Income from "./components/Income";
+import People from "./components/People";
 
 class App extends Component {
   constructor(props) {
@@ -13,7 +14,8 @@ class App extends Component {
 
     this.state = {
       incomes: [],
-      expenses: []
+      expenses: [],
+      people: []
     };
   }
 
@@ -32,6 +34,13 @@ class App extends Component {
         });
       });
     });
+    fetch("http://localhost:3001/people").then(response => {
+      response.json().then(peopleData => {
+        this.setState({
+          people: peopleData
+        });
+      });
+    });
   }
 
   render() {
@@ -42,12 +51,17 @@ class App extends Component {
         <Route
           exact
           path="/expense"
-          component={() => <ExpenseModal expenseList={this.state.expenses} />}
+          component={() => <Expenses expenseList={this.state.expenses} />}
         />
         <Route
           exact
           path="/income"
-          component={() => <IncomeModal incomeList={this.state.incomes} />}
+          component={() => <Income incomeList={this.state.incomes} />}
+        />
+        <Route
+          exact
+          path="/people"
+          component={() => <People peopleList={this.state.people} />}
         />
       </Fragment>
     );
