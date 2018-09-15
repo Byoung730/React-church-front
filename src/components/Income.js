@@ -194,17 +194,16 @@ class incomeModal extends Component {
         <div>
           <style>
             {`
-
             td {
               border: 1px solid black;
               text-align: center
             }`}
           </style>
           <div>
-            <Typography variant="display1" gutterBottom={true}>
+            <Typography variant="display3" align="center" gutterBottom={true}>
               Income Manager
             </Typography>
-            <Typography variant="display1">
+            <Typography variant="display1" gutterBottom={true}>
               Total incomes: ${cleanTotal}
             </Typography>
             <Search searchField={allItems} />

@@ -1,5 +1,6 @@
 import React from "react";
 import logo from "../logo.svg";
+import churchImage from "../church_image.jpg";
 import { Typography } from "@material-ui/core";
 
 export default () => (
@@ -17,9 +18,10 @@ export default () => (
       Welcome!
     </Typography>
     <img src={logo} className="App-logo" alt="logo" />
-    <Typography align="center" variant="display1">
+    <Typography align="center" gutterBottom={true} variant="display1">
       Feel free to use the navigation bar at the top of the screen to manage
       your data...Enjoy!
     </Typography>
+    <img src={churchImage} />
   </div>
 );
