@@ -207,10 +207,10 @@ class ExpenseModal extends Component {
             }`}
           </style>
           <div>
-            <Typography variant="display1" gutterBottom={true}>
+            <Typography variant="display3" align="center" gutterBottom={true}>
               Expense Manager
             </Typography>
-            <Typography variant="display1">
+            <Typography variant="display1" gutterBottom={true}>
               Total Expenses: ${cleanTotal}
             </Typography>
             <Search searchField={allItems} />

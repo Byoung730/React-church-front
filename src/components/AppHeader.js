@@ -18,20 +18,24 @@ const styles = {
 const AppHeader = ({ classes }) => (
   <AppBar position="static">
     <Toolbar>
-      <Typography variant="title" color="inherit">
+      <Typography variant="display2" color="inherit">
         Community Builder
       </Typography>
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
       <Button color="inherit" component={Link} to="/">
         Home
       </Button>
+      &nbsp;&nbsp;
       <Button color="inherit" component={Link} to="/expense">
-        Expense Manager
+        Expenses
       </Button>
+      &nbsp;&nbsp;
       <Button color="inherit" component={Link} to="/income">
-        Income Manager
+        Income
       </Button>
+      &nbsp;&nbsp;
       <Button color="inherit" component={Link} to="/people">
-        People Manager
+        People
       </Button>
       <div className={classes.flex} />
       <Button color="inherit" disabled>

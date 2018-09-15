@@ -200,7 +200,7 @@ class People extends Component {
             }`}
           </style>
           <div>
-            <Typography variant="display1" gutterBottom={true}>
+            <Typography variant="display3" align="center" gutterBottom={true}>
               People Manager
             </Typography>
             <Search searchField={allNames} />
