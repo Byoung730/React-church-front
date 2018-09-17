@@ -24,13 +24,13 @@ export default class Maps extends Component {
         <style>
           {`
     maps {
-      width: 400px;
-      height: 400px;
+      width: 300px;
+      height: 300px;
     }`}
         </style>
         <Typography variant="display1" align="center" gutterBottom={true}>
-          Zoom in(+/-) and adjust(click and drag) to find your location and
-          route
+          Zoom in(+/- or double-click) and adjust(click and drag) to find your
+          location and route
         </Typography>
         <Typography variant="display1" align="center" gutterBottom={true}>
           You may need to refresh this page if there is a slow data connection
