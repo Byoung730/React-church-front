@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { Form, FormControl, Col, Modal, ButtonToolbar } from "react-bootstrap";
 import { Button, Typography, Table, FormGroup } from "@material-ui/core";
-import Search from "./Search";
+import ReactSearch from "./ReactSearch";
 
 class incomeModal extends Component {
   constructor(props) {
@@ -206,7 +206,7 @@ class incomeModal extends Component {
             <Typography variant="display1" gutterBottom={true}>
               Total incomes: ${cleanTotal}
             </Typography>
-            <Search searchField={allItems} />
+            <ReactSearch searchField={allItems} />
             <ButtonToolbar>
               <Button variant="raised" color="primary" onClick={this.showModal}>
                 Add Incomes

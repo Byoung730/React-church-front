@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { Form, FormControl, Col, Modal, ButtonToolbar } from "react-bootstrap";
 import { Button, Typography, Table, FormGroup } from "@material-ui/core";
-import Search from "./Search";
+import SearchInput, { createFilter } from "react-search-input";
 
 class ExpenseModal extends Component {
   constructor(props) {
@@ -15,9 +15,12 @@ class ExpenseModal extends Component {
       id: "",
       show: false,
       formdata: [],
-      expenses: this.props.expenseList
+      expenses: this.props.expenseList,
+      searchTerm: "",
+      searchField: this.props.searchField
     };
 
+    this.searchUpdated = this.searchUpdated.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleInputChange = this.handleInputChange.bind(this);
     this.showModal = this.showModal.bind(this);
@@ -148,6 +151,10 @@ class ExpenseModal extends Component {
     }
   }
 
+  searchUpdated(term) {
+    this.setState({ searchTerm: term });
+  }
+
   removeExpense = id => {
     alert("Are you sure you want to Delete this expense?");
     let that = this;
@@ -197,6 +204,10 @@ class ExpenseModal extends Component {
       }
       let total = expenseAmountArray.reduce(reducer);
       let cleanTotal = total.toFixed(2);
+      const KEYS_TO_FILTERS = allItems;
+      const filteredList = allItems.filter(
+        createFilter(this.state.searchTerm, KEYS_TO_FILTERS)
+      );
       return (
         <div>
           <style>
@@ -213,7 +224,15 @@ class ExpenseModal extends Component {
             <Typography variant="display1" gutterBottom={true}>
               Total Expenses: ${cleanTotal}
             </Typography>
-            <Search searchField={allItems} />
+            <div>
+              <SearchInput
+                className="search-input"
+                onChange={this.searchUpdated}
+              />
+              {filteredList.map(i => {
+                return <div className="filteredStuff" key={i} />;
+              })}
+            </div>
             <ButtonToolbar>
               <Button variant="raised" color="primary" onClick={this.showModal}>
                 Add Expenses

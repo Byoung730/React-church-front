@@ -11,12 +11,14 @@
     "jquery": "^3.3.1",
     "lodash": "^4.17.11",
     "moment": "^2.22.2",
+    "ol": "^5.2.0",
     "react": "^16.5.0",
     "react-bootstrap": "^0.32.4",
     "react-dom": "^16.5.0",
     "react-final-form": "^3.6.5",
     "react-router-dom": "^4.3.1",
     "react-scripts": "1.1.5",
+    "react-search-input": "^0.11.3",
     "reactstrap": "^6.4.0"
   },
   "scripts": {
@@ -24,5 +26,8 @@
     "build": "react-scripts build",
     "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject"
+  },
+  "devDependencies": {
+    "parcel-bundler": "^1.9.7"
   }
 }
