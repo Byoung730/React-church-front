@@ -7,6 +7,7 @@ import AppHeader from "./components/AppHeader";
 import Expenses from "./components/Expenses";
 import Income from "./components/Income";
 import People from "./components/People";
+import Maps from "./components/Maps";
 
 class App extends Component {
   constructor(props) {
@@ -63,6 +64,7 @@ class App extends Component {
           path="/people"
           component={() => <People peopleList={this.state.people} />}
         />
+        <Route exact path="/maps" component={Maps} />
       </Fragment>
     );
   }

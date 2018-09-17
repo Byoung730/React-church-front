@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { Form, FormControl, Col, Modal, ButtonToolbar } from "react-bootstrap";
 import { Button, Typography, Table, FormGroup } from "@material-ui/core";
-import Search from "./Search";
+import ReactSearch from "./ReactSearch";
 
 class People extends Component {
   constructor(props) {
@@ -203,7 +203,7 @@ class People extends Component {
             <Typography variant="display3" align="center" gutterBottom={true}>
               People Manager
             </Typography>
-            <Search searchField={allNames} />
+            <ReactSearch searchField={allNames} />
             <ButtonToolbar>
               <Button variant="raised" color="primary" onClick={this.showModal}>
                 Add People
