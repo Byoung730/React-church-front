@@ -107,18 +107,11 @@ class People extends Component {
           .then(response => {
             response.json().then(data => {});
           })
-          .catch(function(err) {
+          .catch(err => {
             console.log(err);
           });
 
-        alert("person updated!");
-
-        this.setState(prevState => ({
-          formdata: prevState.formdata.map(person => {
-            if (person.item === formItem.item) return formItem;
-            else return person;
-          })
-        }));
+        alert("Person updated!");
       } else {
         // add new item
 
