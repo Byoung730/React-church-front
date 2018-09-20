@@ -103,7 +103,8 @@ class ExpenseModal extends Component {
           .then(response => {
             response.json().then(data => {});
           })
-          .catch(function(err) {
+
+          .catch(err => {
             console.log(err);
           });
 

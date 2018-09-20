@@ -11,23 +11,21 @@ class Search extends Component {
     };
   }
 
-  myReceivingFunction = props => {
-    this.setState({ theItems: this.props.allItems });
+  getInfo = () => {
+    // let matches = [];
+    // console.log("searchField (props): ", this.props.searchField);
+    // console.log("searchField (state): ", this.state.searchField);
+    // if (this.state.searchField) {
+    // matches = this.state.searchField.map(i =>
+    //   this.state.searchField.contains(searchValue)
+    // }
+    // );
   };
 
-  getInfo = searchValue => {
-    const matches = this.state.theItems.map(i =>
-      this.state.theItems.contains(searchValue)
-    );
-  };
-
-  myCallback = props => {
-    this.setState({ theItems: this.props.allItems });
-  };
-
-  getInfo = () => {};
+  // getInfo = () => {};
 
   handleInputChange = () => {
+    const field = this.state.searchField;
     this.setState(
       {
         query: this.search.value
@@ -37,6 +35,9 @@ class Search extends Component {
           if (this.state.query.length % 2 === 0) {
             this.getInfo(this.state.query);
           }
+        }
+        if (this.state.query) {
+          return field.filter(i => i.contains(this.state.query));
         }
       }
     );
