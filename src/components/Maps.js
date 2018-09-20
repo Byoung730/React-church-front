@@ -6,6 +6,7 @@ import OSM from "ol/source/OSM";
 import { Typography } from "@material-ui/core";
 
 export default class Maps extends Component {
+
   componentDidMount() {
     const maps = new newMap({
       target: "maps",
@@ -19,9 +20,9 @@ export default class Maps extends Component {
         zoom: 2
       })
     });
-  }
 
   render() {
+
     return (
       <div>
         <style>

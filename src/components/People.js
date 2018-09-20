@@ -112,6 +112,7 @@ class People extends Component {
           });
 
         alert("Person updated!");
+
       } else {
         // add new item
 
